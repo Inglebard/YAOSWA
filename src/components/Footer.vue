@@ -1,6 +1,6 @@
 <template>
   <footer class="footer" id="footer">
-  
+
   </footer>
 </template>
 
@@ -14,5 +14,3 @@ export default {
   }
 }
 </script>
-
-</style>

@@ -83,7 +83,7 @@
                 <span>{{ $t("Temperature") }}</span>
               </div>
               <div class="input_control_select_desc">
-                <span v-html="">{{getDynamicDesc('tempunitid')}}</span>
+                <span>{{getDynamicDesc('tempunitid')}}</span>
               </div>
             </div>
             <div class="input_control_select_icon col-xs-2">
@@ -239,7 +239,7 @@ import {
 export default {
   'name': 'settings',
   'components': {},
-  'data': function() {
+  'data': function () {
     return {
       settingsData: {
         city: '',
@@ -261,7 +261,7 @@ export default {
     }
   },
   methods: {
-    getDynamicDesc: function(key) {
+    getDynamicDesc: function (key) {
       if (key == "city") {
         if (this.settingsData.city === null || String(this.settingsData.city).trim() === '') {
           return this.$t("No city set.");
@@ -326,60 +326,60 @@ export default {
       }
       return '';
     },
-    clickSettingToggle: function(section) {
+    clickSettingToggle: function (section) {
       if (this.settingsToggled == section) {
         this.settingsToggled = null;
       } else {
         this.settingsToggled = section;
       }
     },
-    toggleSettingClass: function(section) {
+    toggleSettingClass: function (section) {
       if (this.settingsToggled == section) {
         return 'show_input_data'
       }
     },
-    saveSetting: function() {
+    saveSetting: function () {
       SettingsService.$emit('saveSettings', this.settingsData);
       this.$router.push({
         path: '/'
       });
     },
-    geolocationAvailable: function() {
+    geolocationAvailable: function () {
       if (navigator.geolocation) {
         return true;
       }
       return false;
     }
   },
-  created: function() {
+  created: function () {
 
-    SettingsService.$on('settingsData', function(dataEvent) {
+    SettingsService.$on('settingsData', function (dataEvent) {
       this.settingsData.city = dataEvent.city;
       this.settingsData.isaccurate = dataEvent.isaccurate;
       this.settingsData.isgeolocate = dataEvent.isgeolocate;
       this.settingsData.cnt = dataEvent.cnt;
       this.settingsData.isanimate = dataEvent.isanimate;
-      this.settingsData.tempunitid = dataEvent.tempunitid,
+      this.settingsData.tempunitid = dataEvent.tempunitid;
       this.settingsData.speedunitid = dataEvent.speedunitid;
       this.settingsData.applanguageid = dataEvent.applanguageid;
       this.settingsData.weatherlanguageid = dataEvent.weatherlanguageid;
 
     }.bind(this));
 
-    SettingsService.$on('weatherLanguageList', function(dataEvent) {
+    SettingsService.$on('weatherLanguageList', function (dataEvent) {
       this.weatherLanguageList = dataEvent;
     }.bind(this));
-    SettingsService.$on('appLanguageList', function(dataEvent) {
+    SettingsService.$on('appLanguageList', function (dataEvent) {
       this.appLanguageList = dataEvent;
     }.bind(this));
-    SettingsService.$on('speedList', function(dataEvent) {
+    SettingsService.$on('speedList', function (dataEvent) {
       this.speedList = dataEvent;
     }.bind(this));
-    SettingsService.$on('tempList', function(dataEvent) {
+    SettingsService.$on('tempList', function (dataEvent) {
       this.tempList = dataEvent;
     }.bind(this));
   },
-  beforeMount: function() {
+  beforeMount: function () {
     SettingsService.$emit('emitWeatherLanguageList', null);
     SettingsService.$emit('emitAppLanguageList', null);
     SettingsService.$emit('emitSpeedList', null);

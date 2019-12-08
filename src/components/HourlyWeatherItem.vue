@@ -59,7 +59,7 @@
         </div>
         <div class="col-xs-6" v-show="weather.wind_deg">
           <img class="detail_icon detail_icon_wind_orientation" src="img/details_icon/icon_wind_orientation.svg" />
-          <span>{{weather.wind_deg | round(0)}}° ({{weather.wind_orient}}) </span>
+          <span>{{weather.wind_deg | round(0)}}° ({{$t(weather.wind_orient)}}) </span>
         </div>
         <div class="col-xs-6" v-show="weather.wind_speed">
           <img class="detail_icon detail_icon_wind_speed" src="img/details_icon/icon_wind_speed.svg" />

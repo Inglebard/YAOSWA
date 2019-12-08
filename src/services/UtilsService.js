@@ -1,10 +1,7 @@
 import Vue from 'vue'
-import i18n from '@/i18n'
 
-import { SettingsService } from '@/services/SettingsService.js'
 
 export const UtilsService = new Vue({
-  i18n,
 	data: function() {
 		return {
             mpstokph:3.6,
@@ -74,72 +71,72 @@ export const UtilsService = new Vue({
     	},
     	getOrientationFromDegree: function(degree)
     	{
-    		var orient = this.$t("N/A");
+    		var orient = "N/A";
 
 
     		if((degree>=348.75 && degree<=380) || ((degree>=0 && degree<=11.25)))
     		{
-    			orient=this.$t("N");
+    			orient="N";
     		}
     		else if (degree>=11.25 && degree<=33.75)
     		{
-    			orient=this.$t("NNE");
+    			orient="NNE";
     		}
     		else if (degree>=33.75 && degree<=56.25)
     		{
-    			orient=this.$t("NE");
+    			orient="NE";
     		}
     		else if (degree>=56.25 && degree<=78.75)
     		{
-    			orient=this.$t("ENE");
+    			orient="ENE";
     		}
     		else if (degree>=78.75 && degree<=101.25)
     		{
-    			orient=this.$t("E");
+    			orient="E";
     		}
     		else if (degree>=101.25 && degree<=123.75)
     		{
-    			orient=this.$t("ESE");
+    			orient="ESE";
     		}
     		else if (degree>=123.75 && degree<=146.25)
     		{
-    			orient=this.$t("SE");
+    			orient="SE";
     		}
     		else if (degree>=146.25 && degree<=168.75)
     		{
-    			orient=this.$t("SSE");
+    			orient="SSE";
     		}
     		else if (degree>=168.75 && degree<=191.25)
     		{
-    			orient=this.$t("S");
+    			orient="S";
     		}
     		else if (degree>=191.25 && degree<=213.75)
     		{
-    			orient=this.$t("SSW");
+    			orient="SSW";
     		}
     		else if (degree>=213.75 && degree<=236.25)
     		{
-    			orient=this.$t("SW");
+    			orient="SW";
     		}
     		else if (degree>=236.25 && degree<=258.75)
     		{
-    			orient=this.$t("WSW");
+    			orient="WSW";
     		}
     		else if (degree>=258.75 && degree<=281.25)
     		{
-    			orient=this.$t("W");
+    			orient="W";
     		}
     		else if (degree>=281.25 && degree<=303.75)
     		{
-    			orient=this.$t("WNW");
+    			orient="WNW";
     		}
     		else if (degree>=303.75 && degree<=326.25)
     		{
-    			orient=this.$t("NW");
+    			orient="NW";
     		}
     		else
     		{
-    			orient=this.$t("NNW");
+    			orient="NNW";
     		}
     		return orient;
     	},
@@ -147,7 +144,7 @@ export const UtilsService = new Vue({
     	{
     	    return window.navigator.onLine;
     	},
-    	getCustomWeatherInfo: function(code,pod) {
+    	getCustomWeatherInfo: function(code,pod,settings) {
     		code = typeof code !== 'undefined' ? code : 801;
       		pod = typeof pod !== 'undefined' ? pod : "d";
 
@@ -158,7 +155,7 @@ export const UtilsService = new Vue({
     		var color_night="#41403b";
 
     		var root_image = "img/weather_icon/";
-    		var animate=SettingsService.getIsAnimate();
+    		var animate=settings.isanimate;
     		if(animate)
     		{
     			root_image="img/weather_icon_animate/";
@@ -184,7 +181,7 @@ export const UtilsService = new Vue({
     		var day_status = "day";
     		var isNight = false;
 
-    		var langWeather=SettingsService.getWeatherLanguage().label;
+    		var langWeather=settings.weatherlanguage.label;
 
     		if(pod=="n")
     		{

@@ -425,7 +425,16 @@ export const SettingsService = new Vue({
       objParam.speedunitid = this.getSpeedUnitId();
       objParam.applanguageid = this.getAppLanguageId();
       objParam.weatherlanguageid = this.getWeatherLanguageId();
+
+      objParam.speedunit = this.getSpeedUnit();
+      objParam.tempunit = this.getTempUnit();
+      objParam.percunit = this.getPercUnit();
+      objParam.pressureunit = this.getPressureUnit();
+
+      objParam.weatherlanguage = this.getWeatherLanguage();
+      objParam.applanguage = this.getAppLanguage();
       objParam.cnt = this.getCnt();
+      objParam.apiId = this.getApiId();
       return objParam;
     },
     setSettingsFromObj: function(objParam) {

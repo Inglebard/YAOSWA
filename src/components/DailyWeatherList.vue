@@ -1,6 +1,7 @@
 <template>
   <div class="weather_data_wrapper" v-if="dailyWeather">
     <dailyweatheritem
+    v-bind:key="index"
     v-bind:index="index"
     v-bind:weather="weather"
     v-bind:dailyWeather="dailyWeather"
@@ -11,27 +12,24 @@
 </template>
 
 <script>
-import DailyWeatherItem from '@/components/DailyWeatherItem.vue';
+import DailyWeatherItem from '@/components/DailyWeatherItem.vue'
 
 export default {
   name: 'dailyweatherlist',
   components: {
-    'dailyweatheritem': DailyWeatherItem,
+    'dailyweatheritem': DailyWeatherItem
   },
-  props:[
+  props: [
     'dailyWeather',
     'imgsrcoverlay',
     'lazyLoadCache'
   ],
-  data: function() {
-    return {
-    };
+  data: function () {
+    return {}
   },
   methods: {
   },
-  beforeMount: function() {
+  beforeMount: function () {
   }
 }
 </script>
-
-</style>

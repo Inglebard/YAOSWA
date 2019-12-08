@@ -1,6 +1,7 @@
 <template>
     <div class="weather_data_wrapper" v-if="hourlyWeather">
       <hourlyweatheritem
+      v-bind:key="index"
       v-bind:index="index"
       v-bind:weather="weather"
       v-bind:hourlyWeather="hourlyWeather"
@@ -18,20 +19,17 @@ export default {
   components: {
     'hourlyweatheritem': HourlyWeatherItem,
   },
-  props:[
+  props: [
     'hourlyWeather',
     'imgsrcoverlay',
     'lazyLoadCache'
   ],
-  data: function() {
-    return {
-    };
+  data: function () {
+    return {}
   },
   methods: {
   },
-  beforeMount: function() {
+  beforeMount: function () {
   }
 }
 </script>
-
-</style>

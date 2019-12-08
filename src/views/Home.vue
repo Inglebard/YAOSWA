@@ -28,22 +28,13 @@
         </div>
         <div class="tab_list">
           <div class="tab" v-show="isActiveTab(0)">
-            <currentweatherlist
-            v-bind:currentWeather="currentWeather"
-            v-bind:imgsrcoverlay="imgsrcoverlay"
-            v-bind:lazyLoadCache="lazyLoadCache"></currentweatherlist>
+            <currentweatherlist v-bind:currentWeather="currentWeather" v-bind:imgsrcoverlay="imgsrcoverlay" v-bind:lazyLoadCache="lazyLoadCache"></currentweatherlist>
           </div>
           <div class="tab" v-show="isActiveTab(1)">
-            <hourlyweatherlist
-            v-bind:hourlyWeather="hourlyWeather"
-            v-bind:imgsrcoverlay="imgsrcoverlay"
-            v-bind:lazyLoadCache="lazyLoadCache"></hourlyweatherlist>
+            <hourlyweatherlist v-bind:hourlyWeather="hourlyWeather" v-bind:imgsrcoverlay="imgsrcoverlay" v-bind:lazyLoadCache="lazyLoadCache"></hourlyweatherlist>
           </div>
           <div class="tab" v-show="isActiveTab(2)">
-            <dailyweatherlist
-            v-bind:dailyWeather="dailyWeather"
-            v-bind:imgsrcoverlay="imgsrcoverlay"
-            v-bind:lazyLoadCache="lazyLoadCache"></dailyweatherlist>
+            <dailyweatherlist v-bind:dailyWeather="dailyWeather" v-bind:imgsrcoverlay="imgsrcoverlay" v-bind:lazyLoadCache="lazyLoadCache"></dailyweatherlist>
           </div>
         </div>
       </div>
@@ -78,7 +69,12 @@
   import {
     WeatherService
   } from '@/services/WeatherService.js'
-  import { HeaderService } from '@/services/HeaderService.js'
+  import {
+    HeaderService
+  } from '@/services/HeaderService.js'
+  import {
+    SettingsService
+  } from '@/services/SettingsService.js'
   import CurrentWeatherList from '@/components/CurrentWeatherList.vue';
   import HourlyWeatherList from '@/components/HourlyWeatherList.vue';
   import DailyWeatherList from '@/components/DailyWeatherList.vue';
@@ -92,6 +88,7 @@
     },
     'data': function() {
       return {
+        settingsData: {},
         city_header_title: '',
         country_header_title: '',
         lon_header_title: '',
@@ -119,6 +116,36 @@
       }
     },
     methods: {
+      init: function(dataEvent) {
+        this.settingsData.city = dataEvent.city;
+        this.settingsData.isaccurate = dataEvent.isaccurate;
+        this.settingsData.isgeolocate = dataEvent.isgeolocate;
+        this.settingsData.cnt = dataEvent.cnt;
+        this.settingsData.isanimate = dataEvent.isanimate;
+        this.settingsData.tempunitid = dataEvent.tempunitid,
+        this.settingsData.speedunitid = dataEvent.speedunitid;
+        this.settingsData.applanguageid = dataEvent.applanguageid;
+        this.settingsData.weatherlanguageid = dataEvent.weatherlanguageid;
+
+        this.settingsData.tempunit = dataEvent.tempunit,
+        this.settingsData.speedunit = dataEvent.speedunit;
+        this.settingsData.applanguage = dataEvent.applanguage;
+        this.settingsData.weatherlanguage = dataEvent.weatherlanguage;
+
+        this.settingsData.pressureunit = dataEvent.pressureunit;
+        this.settingsData.percunit = dataEvent.percunit;
+
+        this.settingsData.apiId = dataEvent.apiId;
+
+        /*Tanslation for WeatherService*/
+        this.settingsData.pressureUnitLab = this.$t(this.settingsData.pressureunit.unit),
+        this.settingsData.precUnitLab = this.$t(this.settingsData.percunit.unit);
+        this.settingsData.tempUnitLab = this.$t(this.settingsData.tempunit.unit);
+        this.settingsData.speedUnitLab = this.$t(this.settingsData.speedunit.unit);
+        /*End tanslation for WeatherService*/
+
+        this.loadWeather(this.activeTab,this.settingsData);
+      },
       getCityCountryTitle: function() {
         if (this.city_header_title && this.country_header_title) {
           return this.city_header_title + ' / ' + this.country_header_title;
@@ -148,12 +175,12 @@
       },
       nextTab: function() {
         this.activeTab++;
-        this.loadWeather(this.activeTab);
+        this.loadWeather(this.activeTab,this.settingsData);
         this.weather_header_title = this.$t(this.weather_title[this.activeTab]);
       },
       prevTab: function() {
         this.activeTab--;
-        this.loadWeather(this.activeTab);
+        this.loadWeather(this.activeTab,this.settingsData);
         this.weather_header_title = this.$t(this.weather_title[this.activeTab]);
       },
       isActiveTab: function(index) {
@@ -167,17 +194,6 @@
           return true;
         }
         return false;
-      },
-      toggleWeatherDetail: function() {
-        //TODO
-        /*
-        var target = angular.element($event.currentTarget);
-        if (!target.hasClass("show_weather_detail")) {
-          target.addClass("show_weather_detail");
-        } else {
-          target.removeClass("show_weather_detail");
-        }
-        */
       },
       errorOverlay: function() {
         var weather_test;
@@ -201,7 +217,7 @@
       },
       refresh: function() {
         this.weather_header_title = this.$t(this.weather_title[this.activeTab]);
-        this.loadWeather(this.activeTab);
+        this.loadWeather(this.activeTab,this.settingsData);
       },
       loadDisplayedWeather: function(type_weather) {
         this.currentWeather = undefined;
@@ -220,19 +236,19 @@
         }
         this.lazyLoadCache = (new Date()).getTime();
       },
-      loadWeather: function(type_weather) {
+      loadWeather: function(type_weather,settings) {
         this.imgsrcoverlay = 'img/application_icon/loader_animate.svg?lazyload=' + this.lazyLoadCache;
         this.loaderOverlay = true;
 
         switch (type_weather) {
           case 0:
-            WeatherService.$emit('emitCurrentWeatherData');
+            WeatherService.$emit('emitCurrentWeatherData',settings);
             break;
           case 1:
-            WeatherService.$emit('emitHourlyWeatherData');
+            WeatherService.$emit('emitHourlyWeatherData',settings);
             break;
           case 2:
-            WeatherService.$emit('emitDailyWeatherData');
+            WeatherService.$emit('emitDailyWeatherData',settings);
             break;
         }
       },
@@ -275,15 +291,18 @@
       }
     },
     created: function() {
+
+      SettingsService.$on('settingsData', this.init);
+
       WeatherService.$on('currentWeatherData', this.setCurrentWeatherData);
       WeatherService.$on('hourlyWeatherData', this.setHourlyWeatherData);
       WeatherService.$on('dailyWeatherData', this.setDailyWeatherData);
 
     },
-    beforeMount: function() {
+    mounted: function() {
+      SettingsService.$emit('emitSettingsData', null);
       HeaderService.$emit('hideBackButton');
       this.weather_header_title = this.$t(this.weather_title[this.activeTab]);
-      this.loadWeather(this.activeTab);
 
     }
   }

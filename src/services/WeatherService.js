@@ -1,18 +1,13 @@
 import Vue from 'vue'
-import i18n from '@/i18n'
+
 import VueResource from 'vue-resource'
 Vue.use(VueResource);
 
-
-import {
-  SettingsService
-} from '@/services/SettingsService.js'
 import {
   UtilsService
 } from '@/services/UtilsService.js'
 
 export const WeatherService = new Vue({
-  i18n,
   data: function() {
     return {
 
@@ -20,15 +15,15 @@ export const WeatherService = new Vue({
   },
   methods: {
 
-    getWeatherParam: function() {
+    getWeatherParam: function(settings) {
       var param = new Object();
-      param.location = SettingsService.getCity();
-      param.accurate = SettingsService.getIsAccurate();
-      param.geolocate = SettingsService.getIsGeolocate();
-      param.tempUnit = SettingsService.getTempUnit().owm;
-      param.cnt = SettingsService.getCnt();
-      param.apiId = SettingsService.getApiId();
-      param.lang = SettingsService.getWeatherLanguage().label;
+      param.location = settings.city;
+      param.accurate = settings.isaccurate;
+      param.geolocate = settings.isgeolocate;
+      param.tempUnit = settings.tempunit.owm;
+      param.cnt = settings.cnt;
+      param.apiId = settings.apiId;
+      param.lang = settings.weatherlanguage.label;
       param.cordovaOpt = {
         timeout: 60000,
         maximumAge: 100000
@@ -40,8 +35,8 @@ export const WeatherService = new Vue({
       }
       return param;
     },
-    getCurrentWeather: function() {
-      var param = this.getWeatherParam();
+    getCurrentWeather: function(settings) {
+      var param = this.getWeatherParam(settings);
       var base_current_weather_url = "https://api.openweathermap.org/data/2.5/weather?";
 
       var current_weather_url_not_geo = "q=" + escape(param.location);
@@ -72,9 +67,9 @@ export const WeatherService = new Vue({
       return request_return;
 
     },
-    getHourlyForecastWeather: function() {
+    getHourlyForecastWeather: function(settings) {
 
-      var param = this.getWeatherParam();
+      var param = this.getWeatherParam(settings);
       var base_hourly_weather_url = "https://api.openweathermap.org/data/2.5/forecast?";
 
       var hourly_weather_url_not_geo = "q=" + param.location;
@@ -108,9 +103,9 @@ export const WeatherService = new Vue({
       return request_return;
 
     },
-    getDailyForecastWeather: function() {
+    getDailyForecastWeather: function(settings) {
 
-      var param = this.getWeatherParam();
+      var param = this.getWeatherParam(settings);
       var base_daily_weather_url = "https://api.openweathermap.org/data/2.5/forecast/daily?";
 
       var daily_weather_url_not_geo = "q=" + escape(param.location);
@@ -143,7 +138,7 @@ export const WeatherService = new Vue({
       }
       return request_return;
     },
-    formatWeatherData: function(HTTPresponse, type_weather) {
+    formatWeatherData: function(HTTPresponse, type_weather,settings) {
       console.log(HTTPresponse);
 
       var weatherObj = new Object();
@@ -159,14 +154,13 @@ export const WeatherService = new Vue({
         return weatherObj;
       }
 
-      var temp_unit_id = SettingsService.getTempUnitId();
-      var speed_unit_id = SettingsService.getSpeedUnitId();
+      var temp_unit_id = settings.tempunitid;
+      var speed_unit_id = settings.speedunitid;
 
-      weatherObj.percUnitLab = this.$t(SettingsService.getPercUnit().unit);
-      weatherObj.pressureUnitLab = this.$t(SettingsService.getPressureUnit().unit);
-      weatherObj.precUnitLab = this.$t(SettingsService.getPrecipUnit().unit);
-      weatherObj.tempUnitLab = this.$t(SettingsService.getTempUnit().unit);
-      weatherObj.speedUnitLab = this.$t(SettingsService.getSpeedUnit().unit);
+      weatherObj.pressureUnitLab = settings.pressureUnitLab;
+      weatherObj.precUnitLab = settings.precUnitLab;
+      weatherObj.tempUnitLab = settings.tempUnitLab;
+      weatherObj.speedUnitLab = settings.speedUnitLab;
 
       if (type_weather === 0) {
         weatherObj.dt = HTTPresponse.dt * 1000;
@@ -203,7 +197,7 @@ export const WeatherService = new Vue({
         if (typeof(HTTPresponse.weather) !== "undefined") {
           weatherObj.description = HTTPresponse.weather[0].description;
           weatherObj.weather_id = HTTPresponse.weather[0].id;
-          weatherObj.customInfo = UtilsService.getCustomWeatherInfo(weatherObj.weather_id, weatherObj.pod);
+          weatherObj.customInfo = UtilsService.getCustomWeatherInfo(weatherObj.weather_id, weatherObj.pod,settings);
           if (typeof(weatherObj.customInfo.description) !== "undefined") {
             weatherObj.description = weatherObj.customInfo.description;
           }
@@ -265,7 +259,7 @@ export const WeatherService = new Vue({
             if (typeof(HTTPresponse.list[i].weather) !== "undefined") {
               weatherObj.list[i].description = HTTPresponse.list[i].weather[0].description;
               weatherObj.list[i].weather_id = HTTPresponse.list[i].weather[0].id;
-              weatherObj.list[i].customInfo = UtilsService.getCustomWeatherInfo(weatherObj.list[i].weather_id, weatherObj.list[i].pod);
+              weatherObj.list[i].customInfo = UtilsService.getCustomWeatherInfo(weatherObj.list[i].weather_id, weatherObj.list[i].pod,settings);
 
               if (typeof(weatherObj.list[i].customInfo.description) !== "undefined") {
                 weatherObj.list[i].description = weatherObj.list[i].customInfo.description;
@@ -321,7 +315,7 @@ export const WeatherService = new Vue({
             if (typeof(HTTPresponse.list[j].weather) !== "undefined") {
               weatherObj.list[j].description = HTTPresponse.list[j].weather[0].description;
               weatherObj.list[j].weather_id = HTTPresponse.list[j].weather[0].id;
-              weatherObj.list[j].customInfo = UtilsService.getCustomWeatherInfo(weatherObj.list[j].weather_id, weatherObj.list[j].pod);
+              weatherObj.list[j].customInfo = UtilsService.getCustomWeatherInfo(weatherObj.list[j].weather_id, weatherObj.list[j].pod,settings);
 
               if (typeof(weatherObj.list[j].customInfo.description) !== "undefined") {
                 weatherObj.list[j].description = weatherObj.list[j].customInfo.description;
@@ -344,9 +338,9 @@ export const WeatherService = new Vue({
       console.log(weatherObj);
       return weatherObj;
     },
-    emitCurrentWeatherData: function() {
-      this.getCurrentWeather().then(function(response) {
-          var weatherObj = this.formatWeatherData(response.data, 0);
+    emitCurrentWeatherData: function(settings) {
+      this.getCurrentWeather(settings).then(function(response) {
+          var weatherObj = this.formatWeatherData(response.data, 0,settings);
           this.$emit('currentWeatherData', weatherObj);
         }.bind(this),
         function(response) {
@@ -356,9 +350,9 @@ export const WeatherService = new Vue({
         }.bind(this));
 
     },
-    emitHourlyWeatherData: function() {
-      this.getHourlyForecastWeather().then(function(response) {
-          var weatherObj = this.formatWeatherData(response.data, 1);
+    emitHourlyWeatherData: function(settings) {
+      this.getHourlyForecastWeather(settings).then(function(response) {
+          var weatherObj = this.formatWeatherData(response.data, 1,settings);
           this.$emit('hourlyWeatherData', weatherObj);
 
         }.bind(this),
@@ -370,9 +364,9 @@ export const WeatherService = new Vue({
         }.bind(this));
 
     },
-    emitDailyWeatherData: function() {
-      this.getDailyForecastWeather().then(function(response) {
-          var weatherObj = this.formatWeatherData(response.data, 2);
+    emitDailyWeatherData: function(settings) {
+      this.getDailyForecastWeather(settings).then(function(response) {
+          var weatherObj = this.formatWeatherData(response.data, 2,settings);
           this.$emit('dailyWeatherData', weatherObj);
         }.bind(this),
         function(response) {
@@ -386,15 +380,16 @@ export const WeatherService = new Vue({
   created: function() {
 
     this.$on('emitCurrentWeatherData', function(dataEvent) {
-      this.emitCurrentWeatherData();
+
+      this.emitCurrentWeatherData(dataEvent);
     }.bind(this));
 
     this.$on('emitHourlyWeatherData', function(dataEvent) {
-      this.emitHourlyWeatherData();
+      this.emitHourlyWeatherData(dataEvent);
     }.bind(this));
 
     this.$on('emitDailyWeatherData', function(dataEvent) {
-      this.emitDailyWeatherData();
+      this.emitDailyWeatherData(dataEvent);
     }.bind(this));
 
   }
