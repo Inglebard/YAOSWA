@@ -26,7 +26,6 @@ const dateTimeFormats = {
   }
 }
 
-
 Vue.use(VueI18n)
 
 function loadLocaleMessages () {

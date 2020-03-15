@@ -79,18 +79,18 @@
 <script>
 export default {
   name: 'currentweatherlist',
-  props:[
+  props: [
     'currentWeather',
-    'lazyLoadCache',
+    'lazyLoadCache'
 
   ],
-  data: function() {
+  data: function () {
     return {
-    };
+    }
   },
   methods: {
   },
-  beforeMount: function() {
+  beforeMount: function () {
   }
 }
 </script>

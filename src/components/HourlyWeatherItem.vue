@@ -89,23 +89,23 @@ export default {
     'imgsrcoverlay',
     'lazyLoadCache'
   ],
-  data: function() {
+  data: function () {
     return {
-      weatherDetail: false,
-    };
-  },
-  methods: {
-    toggleWeatherDetail: function() {
-      this.weatherDetail = !this.weatherDetail;
-    },
-    weatherDetailClass: function() {
-      if (this.weatherDetail) {
-        return "show_weather_detail";
-      }
-      return '';
+      weatherDetail: false
     }
   },
-  beforeMount: function() {}
+  methods: {
+    toggleWeatherDetail: function () {
+      this.weatherDetail = !this.weatherDetail
+    },
+    weatherDetailClass: function () {
+      if (this.weatherDetail) {
+        return 'show_weather_detail'
+      }
+      return ''
+    }
+  },
+  beforeMount: function () {}
 }
 </script>
 

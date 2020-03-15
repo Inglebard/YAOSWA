@@ -28,29 +28,28 @@
 import { HeaderService } from '@/services/HeaderService.js'
 export default {
   name: 'Header',
-  data: function() {
+  data: function () {
     return {
       showBackButton: false
     }
   },
   methods: {
-    getHeaderTitle: function() {
-      return 'YAOSWA';
+    getHeaderTitle: function () {
+      return 'YAOSWA'
     },
-    getBackButtonClass: function() {
+    getBackButtonClass: function () {
       if (this.showBackButton) {
-        return "";
+        return ''
       } else {
-        return "header_no_back_button";
+        return 'header_no_back_button'
       }
     },
-    setShowBackButton: function(data) {
-      this.showBackButton=data;
+    setShowBackButton: function (data) {
+      this.showBackButton = data
     }
   },
-  created: function()
-  {
-    HeaderService.$on('backButton', this.setShowBackButton);
+  created: function () {
+    HeaderService.$on('backButton', this.setShowBackButton)
   }
 }
 </script>

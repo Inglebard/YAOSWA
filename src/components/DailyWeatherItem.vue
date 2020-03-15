@@ -82,31 +82,30 @@
 <script>
 export default {
   name: 'dailyweatheritem',
-  props:[
+  props: [
     'index',
     'weather',
     'dailyWeather',
     'imgsrcoverlay',
     'lazyLoadCache'
   ],
-  data: function() {
+  data: function () {
     return {
-      weatherDetail:false,
-    };
+      weatherDetail: false
+    }
   },
   methods: {
-    toggleWeatherDetail: function() {
-      this.weatherDetail=!this.weatherDetail;
+    toggleWeatherDetail: function () {
+      this.weatherDetail = !this.weatherDetail
   	},
-    weatherDetailClass: function() {
-  		if(this.weatherDetail)
-  		{
-  			return "show_weather_detail";
+    weatherDetailClass: function () {
+  		if (this.weatherDetail) {
+  			return 'show_weather_detail'
   		}
-      return '';
+      return ''
   	}
   },
-  beforeMount: function() {
+  beforeMount: function () {
   }
 }
 </script>

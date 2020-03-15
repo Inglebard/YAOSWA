@@ -257,80 +257,79 @@ export default {
       weatherLanguageList: {},
       appLanguageList: {},
       speedList: {},
-      tempList: {},
+      tempList: {}
     }
   },
   methods: {
     getDynamicDesc: function (key) {
-      if (key == "city") {
+      if (key == 'city') {
         if (this.settingsData.city === null || String(this.settingsData.city).trim() === '') {
-          return this.$t("No city set.");
+          return this.$t('No city set.')
         } else {
-          return this.$t("Current city set : {CITY}.", {
+          return this.$t('Current city set : {CITY}.', {
             CITY: String(this.settingsData.city).trim()
-          });
+          })
         }
       }
-      if (key == "isaccurate") {
+      if (key == 'isaccurate') {
         if (this.settingsData.isaccurate === false) {
-          return this.$t("Will search the closest city.");
+          return this.$t('Will search the closest city.')
         } else {
-          return this.$t("Will search the exact city.");
+          return this.$t('Will search the exact city.')
         }
       }
-      if (key == "isgeolocate") {
+      if (key == 'isgeolocate') {
         if (this.settingsData.isgeolocate === false) {
-          return this.$t("Will use the registered city.");
+          return this.$t('Will use the registered city.')
         } else {
-          return this.$t("Will use wifi/GPS location if enable.");
+          return this.$t('Will use wifi/GPS location if enable.')
         }
       }
-      if (key == "tempunitid" && this.tempList && this.tempList[this.settingsData.tempunitid]) {
-
-        return this.$t("Selected temp unit : {UNIT}.", {
+      if (key == 'tempunitid' && this.tempList && this.tempList[this.settingsData.tempunitid]) {
+        return this.$t('Selected temp unit : {UNIT}.', {
           UNIT: this.tempList[this.settingsData.tempunitid].unit
-        });
+        })
       }
-      if (key == "speedunitid" && this.speedList && this.speedList[this.settingsData.speedunitid]) {
-        return this.$t("Selected speed unit : {UNIT}.", {
+      if (key == 'speedunitid' && this.speedList && this.speedList[this.settingsData.speedunitid]) {
+        return this.$t('Selected speed unit : {UNIT}.', {
           UNIT: this.speedList[this.settingsData.speedunitid].unit
-        });
+        })
       }
-      if (key == "applanguageid" && this.appLanguageList && this.appLanguageList[this.settingsData.applanguageid]) {
-        return this.$t("Language for the application.<br/>Currently selected : {LABEL_SETTING}.", {
+      if (key == 'applanguageid' && this.appLanguageList && this.appLanguageList[this.settingsData.applanguageid]) {
+        return this.$t('Language for the application.<br/>Currently selected : {LABEL_SETTING}.', {
           LABEL_SETTING: this.appLanguageList[this.settingsData.applanguageid].label_setting
-        });
+        })
       }
-      if (key == "weatherlanguageid" && this.weatherLanguageList && this.weatherLanguageList[this.settingsData.weatherlanguageid]) {
-        return this.$t("Language weather from the provider OpenWeatherMap.<br/>Currently selected : {LABEL_SETTING}.", {
+      if (key == 'weatherlanguageid' && this.weatherLanguageList && this.weatherLanguageList[this.settingsData.weatherlanguageid]) {
+        return this.$t('Language weather from the provider OpenWeatherMap.<br/>Currently selected : {LABEL_SETTING}.', {
           LABEL_SETTING: this.weatherLanguageList[this.settingsData.weatherlanguageid].label_setting
-        });
+        })
       }
 
-      if (key == "cnt") {
+      if (key == 'cnt') {
         if (this.settingsData.cnt === null || String(this.settingsData.cnt).trim() === '') {
-          return this.$t("Will use default max number of results.");
+          return this.$t('Will use default max number of results.')
         } else {
-          return this.$t("Max number of results if available : {NUMBER}.", {
+          return this.$t('Max number of results if available : {NUMBER}.', {
             NUMBER: String(this.settingsData.cnt).trim()
-          });
+          })
         }
       }
 
-      if (key == "isanimate") {
+      if (key == 'isanimate') {
         if (this.settingsData.isanimate === false) {
-          return this.$t("Will use SVG files without animation.");
+          return this.$t('Will use SVG files without animation.')
         } else {
-          return this.$t("Will use animated SVG files.");
+          return this.$t('Will use animated SVG files.')
         }
       }
-      return '';
+      return ''
     },
     clickSettingToggle: function (section) {
       if (this.settingsToggled == section) {
-        this.settingsToggled = null;
+        this.settingsToggled = null
       } else {
-        this.settingsToggled = section;
+        this.settingsToggled = section
       }
     },
     toggleSettingClass: function (section) {
@@ -339,53 +338,51 @@ export default {
       }
     },
     saveSetting: function () {
-      SettingsService.$emit('saveSettings', this.settingsData);
+      SettingsService.$emit('saveSettings', this.settingsData)
       this.$router.push({
         path: '/'
-      });
+      })
     },
     geolocationAvailable: function () {
       if (navigator.geolocation) {
-        return true;
+        return true
       }
-      return false;
+      return false
     }
   },
   created: function () {
-
     SettingsService.$on('settingsData', function (dataEvent) {
-      this.settingsData.city = dataEvent.city;
-      this.settingsData.isaccurate = dataEvent.isaccurate;
-      this.settingsData.isgeolocate = dataEvent.isgeolocate;
-      this.settingsData.cnt = dataEvent.cnt;
-      this.settingsData.isanimate = dataEvent.isanimate;
-      this.settingsData.tempunitid = dataEvent.tempunitid;
-      this.settingsData.speedunitid = dataEvent.speedunitid;
-      this.settingsData.applanguageid = dataEvent.applanguageid;
-      this.settingsData.weatherlanguageid = dataEvent.weatherlanguageid;
-
-    }.bind(this));
+      this.settingsData.city = dataEvent.city
+      this.settingsData.isaccurate = dataEvent.isaccurate
+      this.settingsData.isgeolocate = dataEvent.isgeolocate
+      this.settingsData.cnt = dataEvent.cnt
+      this.settingsData.isanimate = dataEvent.isanimate
+      this.settingsData.tempunitid = dataEvent.tempunitid
+      this.settingsData.speedunitid = dataEvent.speedunitid
+      this.settingsData.applanguageid = dataEvent.applanguageid
+      this.settingsData.weatherlanguageid = dataEvent.weatherlanguageid
+    }.bind(this))
 
     SettingsService.$on('weatherLanguageList', function (dataEvent) {
-      this.weatherLanguageList = dataEvent;
-    }.bind(this));
+      this.weatherLanguageList = dataEvent
+    }.bind(this))
     SettingsService.$on('appLanguageList', function (dataEvent) {
-      this.appLanguageList = dataEvent;
-    }.bind(this));
+      this.appLanguageList = dataEvent
+    }.bind(this))
     SettingsService.$on('speedList', function (dataEvent) {
-      this.speedList = dataEvent;
-    }.bind(this));
+      this.speedList = dataEvent
+    }.bind(this))
     SettingsService.$on('tempList', function (dataEvent) {
-      this.tempList = dataEvent;
-    }.bind(this));
+      this.tempList = dataEvent
+    }.bind(this))
   },
   beforeMount: function () {
-    SettingsService.$emit('emitWeatherLanguageList', null);
-    SettingsService.$emit('emitAppLanguageList', null);
-    SettingsService.$emit('emitSpeedList', null);
-    SettingsService.$emit('emitTempList', null);
-    SettingsService.$emit('emitSettingsData', null);
-    HeaderService.$emit('showBackButton');
+    SettingsService.$emit('emitWeatherLanguageList', null)
+    SettingsService.$emit('emitAppLanguageList', null)
+    SettingsService.$emit('emitSpeedList', null)
+    SettingsService.$emit('emitTempList', null)
+    SettingsService.$emit('emitSettingsData', null)
+    HeaderService.$emit('showBackButton')
   }
 }
 </script>

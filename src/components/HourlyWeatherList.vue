@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import HourlyWeatherItem from '@/components/HourlyWeatherItem.vue';
+import HourlyWeatherItem from '@/components/HourlyWeatherItem.vue'
 
 export default {
   name: 'hourlyweatherlist',
   components: {
-    'hourlyweatheritem': HourlyWeatherItem,
+    'hourlyweatheritem': HourlyWeatherItem
   },
   props: [
     'hourlyWeather',

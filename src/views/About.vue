@@ -29,14 +29,14 @@ import { HeaderService } from '@/services/HeaderService.js'
 export default {
   'name': 'about',
   'components': {},
-  'data': function() {
+  'data': function () {
     return {
-      }
+    }
   },
   methods: {
   },
-  beforeMount: function() {
-    HeaderService.$emit('showBackButton');
+  beforeMount: function () {
+    HeaderService.$emit('showBackButton')
   }
 }
 </script>
